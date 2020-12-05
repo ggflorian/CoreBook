@@ -1,4 +1,5 @@
 ﻿using CoreBook.DataAccess.Repository.IRepository;
+using CoreBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CoreBook.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,12 +23,41 @@ namespace CoreBook.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Test()
+        public IActionResult Upsert(int? id)
         {
-            return View();
+            Category category = new Category();
+
+            if (id == null)
+            {
+                // this is for create
+                return View(category);
+            }
+
+            // this is for update
+            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                if (category.ID == 0) _unitOfWork.Category.Add(category);
+                else _unitOfWork.Category.Update(category);
+
+                _unitOfWork.Save();
+                return RedirectToAction(nameof(Index)); // don't like magic strings "Index"
+            }
+            return View(category);
         }
 
 
+        // WEB METHODS - API CALLS
         #region API CALLS
 
         [HttpGet]
@@ -34,6 +65,19 @@ namespace CoreBook.Areas.Admin.Controllers
         {
             var allObj = _unitOfWork.Category.GetAll();
             return Json(new { data = allObj });
+        }
+
+        [HttpDelete]
+        //[ValidateAntiForgeryToken] // FG WHY: without form goes on bhrugen example
+        public IActionResult Delete(int id)
+        {
+            var objFromDb = _unitOfWork.Category.Get(id);
+            if (objFromDb == null)            
+                return Json(new { succesuri = false, mesaj = "Error while deleting" });
+
+            _unitOfWork.Category.Remove(objFromDb);
+            _unitOfWork.Save();
+            return Json(new { succesuri = true, mesaj = "Delete succesful!" });
         }
 
         #endregion

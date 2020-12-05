@@ -24,7 +24,7 @@ namespace CoreBook.DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.Name = category.Name;
-                _db.SaveChanges();
+                // _db.SaveChanges(); // added save in UnitOfWork (used in CategoryController-Upsert to be consistent)
             }
         }
     }
