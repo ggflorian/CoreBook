@@ -4,14 +4,16 @@ using CoreBook.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreBook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201205204117_AddCoverTypeToDb")]
+    partial class AddCoverTypeToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,55 +53,6 @@ namespace CoreBook.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("CoverTypes");
-                });
-
-            modelBuilder.Entity("CoreBook.Models.Product", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Authors")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoverTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ISBN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("ListPrice")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Price100")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Price50")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CategoryID");
-
-                    b.HasIndex("CoverTypeID");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -300,21 +253,6 @@ namespace CoreBook.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("CoreBook.Models.Product", b =>
-                {
-                    b.HasOne("CoreBook.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CoreBook.Models.CoverType", "CoverType")
-                        .WithMany()
-                        .HasForeignKey("CoverTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
