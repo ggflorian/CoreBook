@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CoreBook.Models;
 using CoreBook.Models.ViewModels;
+using CoreBook.DataAccess.Repository.IRepository;
 
 namespace CoreBook.Areas.Customer.Controllers
 {
@@ -23,9 +24,16 @@ namespace CoreBook.Areas.Customer.Controllers
         }
         */
 
+        private readonly IUnitOfWork _unitOfWork;
+        public HomeController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
+            return View(productList);
         }
 
         public IActionResult Privacy()

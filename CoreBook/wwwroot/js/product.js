@@ -10,19 +10,23 @@ function loadDataTable() {
 
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Admin/Category/GetAll"
+            "url": "/Admin/Product/GetAll"
         },
 
         "columns": [
-            { "data": "name", "width": "60%" },
+            { "data": "title", "width": "20%" },
+            { "data": "authors", "width": "20%" },
+            { "data": "isbn", "width": "14%" },
+            { "data": "price", "width": "14%" },
+            { "data": "category.name", "width": "16%" },
             {
                 "data": "id",
                 "render": function (data) { //data will be the id
                     return `
                         <div class="text-center">
-                            <a title="Editare" href="/Admin/Category/Upsert/${data}" class="btn-sm btn-success text-white" style="cursor:pointer; margin-right:16px;"><i class="fas fa-edit"></i></a>
+                            <a title="Editare" href="/Admin/Product/Upsert/${data}" class="btn-sm btn-success text-white" style="cursor:pointer; margin-right:16px;"><i class="fas fa-edit"></i></a>
 
-                            <a title="Stergere" onclick=Delete("/Admin/Category/Delete/${data}") class="btn-sm btn-danger text-white" style="cursor:pointer">
+                            <a title="Stergere" onclick=Delete("/Admin/Product/Delete/${data}") class="btn-sm btn-danger text-white" style="cursor:pointer">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </div>
@@ -30,7 +34,7 @@ function loadDataTable() {
                 },
                 "orderable": false,
                 "searchable": false,
-                "width": "40%"
+                "width": "16%"
             }
         ],
 

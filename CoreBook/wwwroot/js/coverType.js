@@ -35,7 +35,7 @@ function loadDataTable() {
         ],
 
         "language": {
-            "emptyTable": "Nicio inregistrare, Please click on <b>Add New</b> Button",
+            "emptyTable": "Nicio inregistrare, Please click on <b>Create New</b> Button",
             "loadingRecords": "Incarcare...",
             "processing": "Procesare...",
             "search": "Cautare:",

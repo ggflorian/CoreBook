@@ -20,7 +20,7 @@ namespace CoreBook.DataAccess.Repository
 
         public void Update(Category category)
         {
-            var objFromDb = _db.Categories.FirstOrDefault(s => s.ID == category.ID);
+            var objFromDb = _db.Categories.FirstOrDefault(o => o.ID == category.ID);
             if (objFromDb != null)
             {
                 objFromDb.Name = category.Name;
