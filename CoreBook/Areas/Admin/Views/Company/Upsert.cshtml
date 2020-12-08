@@ -1,0 +1,128 @@
+﻿@model CoreBook.Models.Company
+
+@{ 
+    ViewData["Title"] = "Upsert";
+    var title = "Create Company";
+}
+
+<form method="post">
+    @if (Model.ID != 0)
+    {
+        title = "Edit Company";
+    }
+
+    <div class="row p-3 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="StreetAddress" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="StreetAddress" class="form-control" />
+                    <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="City" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="State" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="State" class="form-control" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="PostalCode" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="PostalCode" class="form-control" />
+                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="PhoneNumber" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="IsAuthorizedCompany" class="font-weight-bold"></label>
+                </div>
+                <div class="col-8">
+                    <input type="checkbox" asp-for="IsAuthorizedCompany" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.ID != 0)
+                    {
+                        <partial name="_EditAndBackToListButton" model="Model.ID" />
+                    }
+                    else
+                    {
+                        <partial name="_CreateAndBackToListButton" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts { 
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+<!-- FG First Markup -->
+@*
+<form method="post">
+    <div class="row p-3 border">
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">TITLE</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    NAME
+                </div>
+                <div class="col-8">
+                    TEXTBOX FOR NAME
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    EDIT | BACK
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+*@

@@ -1,0 +1,85 @@
+﻿using CoreBook.DataAccess.Repository.IRepository;
+using CoreBook.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CoreBook.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    public class CompanyController : Controller
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CompanyController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Upsert(int? id)
+        {
+            Company company = new Company();
+
+            if (id == null)
+            {
+                // this is for create
+                return View(company);
+            }
+
+            // this is for update
+            company = _unitOfWork.Company.Get(id.GetValueOrDefault());
+            if (company == null)
+                return NotFound();
+
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(Company company)
+        {
+            if (ModelState.IsValid)
+            {
+                if (company.ID == 0) _unitOfWork.Company.Add(company);
+                else _unitOfWork.Company.Update(company);
+
+                _unitOfWork.Save();
+                return RedirectToAction(nameof(Index)); // don't like magic strings "Index"
+            }
+            return View(company);
+        }
+
+
+        // WEB METHODS - API CALLS
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var allObj = _unitOfWork.Company.GetAll();
+            return Json(new { data = allObj });
+        }
+
+        [HttpDelete]
+        //[ValidateAntiForgeryToken] // FG WHY: without form goes on bhrugen example
+        public IActionResult Delete(int id)
+        {
+            var objFromDb = _unitOfWork.Company.Get(id);
+            if (objFromDb == null)            
+                return Json(new { succesuri = false, mesaj = "Error while deleting" });
+
+            _unitOfWork.Company.Remove(objFromDb);
+            _unitOfWork.Save();
+            return Json(new { succesuri = true, mesaj = "Delete succesful!" });
+        }
+
+        #endregion
+    }
+}
