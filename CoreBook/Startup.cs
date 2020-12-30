@@ -64,6 +64,11 @@ namespace CoreBook
                 opt.ClientId = "500207077195-nh58246ic5qd2t44ifffvp3hocgt8n0g.apps.googleusercontent.com";
                 opt.ClientSecret = "w8L99NbzCWJrFWzz_uqS65wz";
             });
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(32);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -87,6 +92,7 @@ namespace CoreBook
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
