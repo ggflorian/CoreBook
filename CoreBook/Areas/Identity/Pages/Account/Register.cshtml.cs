@@ -191,6 +191,20 @@ namespace CoreBook.Areas.Identity.Pages.Account
                 }
             }
 
+            Input = new InputModel()
+            {
+                CompanyList = _unitOfWork.Company.GetAll().Select(o => new SelectListItem
+                {
+                    Text = o.Name,
+                    Value = o.ID.ToString()
+                }),
+                RoleList = _roleManager.Roles.Where(o => o.Name != SD.Role_User_Indi).Select(s => s.Name).Select(s => new SelectListItem
+                {
+                    Text = s,
+                    Value = s // or s.Name without first Select
+                })
+            };
+
             // If we got this far, something failed, redisplay form
             return Page();
         }
